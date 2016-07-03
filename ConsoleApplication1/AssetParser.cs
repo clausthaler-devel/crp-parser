@@ -1,4 +1,4 @@
-﻿using ConsoleApplication1.Parsers;
+﻿using CRPParser.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace CRPParser
 {
     public class AssetParser
     {

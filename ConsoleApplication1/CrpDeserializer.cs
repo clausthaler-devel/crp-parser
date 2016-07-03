@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace CRPParser
 {
     public class CrpDeserializer
     {
