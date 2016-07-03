@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRPParser.Parsers
+namespace CRPTools.Parsers
 {
     public static class ImgParser
     {

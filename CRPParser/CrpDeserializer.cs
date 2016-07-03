@@ -1,15 +1,15 @@
-﻿using CrpParser;
-using CrpParser.Utils;
+﻿using CRPTools.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRPParser
+namespace CRPTools
 {
     public class CrpDeserializer
     {
@@ -26,16 +26,23 @@ namespace CRPParser
             assetParser = new AssetParser(reader);
         }
 
-        public void parseFile(Options options)
+        public CrpAssetInfo parseFile( Options options )
+        {
+            return parseFile( options.SaveFiles, options.Verbose );
+        }
+
+        public CrpAssetInfo parseFile( bool SaveFiles = false, bool Verbose = false)
         {
             string magicStr = new string(reader.ReadChars(4));
+            var crpAssetInfo = new CrpAssetInfo();
+
             if (magicStr.Equals(Consts.MAGICSTR))
             {
-                CrpHeader header = parseHeader();
+                crpAssetInfo.header = parseHeader();
 
-                if (options.SaveFiles)
+                if (SaveFiles)
                 {
-                    string path = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + header.mainAssetName + "_contents";
+                    string path = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + crpAssetInfo.header.mainAssetName + "_contents";
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
@@ -43,27 +50,29 @@ namespace CRPParser
                     Environment.CurrentDirectory = (path);
                 }
 
-                if (options.Verbose)
+                if (Verbose)
                 {
-                    Console.WriteLine(header);
+                    Console.WriteLine( crpAssetInfo.header );
                 }
-                if (options.SaveFiles)
+                if (SaveFiles)
                 {
-                    StreamWriter file = new StreamWriter(new FileStream(header.mainAssetName + "_header.json", FileMode.Create));
-                    string json = JsonConvert.SerializeObject(header, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
+                    StreamWriter file = new StreamWriter(new FileStream(crpAssetInfo.header.mainAssetName + "_header.json", FileMode.Create));
+                    string json = JsonConvert.SerializeObject(crpAssetInfo.header, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
                     file.Write(json);
                     file.Close();
                 }
 
-                for (int i = 0; i < header.numAssets; i++)
+                for (int i = 0; i < crpAssetInfo.header.numAssets; i++)
                 {
-                    parseAssets(header, i, options.SaveFiles, options.Verbose);
+                    parseAssets(crpAssetInfo, i, SaveFiles, Verbose);
                 }
             }
             else
             {
                 throw new InvalidDataException("Invalid file format!");
             }
+
+            return crpAssetInfo;
         }
 
         private CrpHeader parseHeader()
@@ -101,7 +110,7 @@ namespace CRPParser
             return output;
         }
 
-        private void parseAssets(CrpHeader header, int index, bool saveFiles, bool isVerbose)
+        private void parseAssets(CrpAssetInfo crpInfo, int index, bool saveFiles, bool isVerbose)
         {
 
             bool isNullFlag = reader.ReadBoolean();
@@ -109,12 +118,22 @@ namespace CRPParser
             {
                 string assemblyQualifiedName = reader.ReadString();
                 string assetType = assemblyQualifiedName.Split(new char[] { ',' })[0];
-                long assetContentLen = header.assets[index].assetSize - (2 + assemblyQualifiedName.Length);
+                long assetContentLen = crpInfo.header.assets[index].assetSize - (2 + assemblyQualifiedName.Length);
                 string assetName = reader.ReadString();
                 assetContentLen -= (1 + assetName.Length);
 
-                string fileName = string.Format("{0}_{1}_{2}", StrUtils.limitStr(assetName), index, header.assets[index].assetType.ToString());
-                assetParser.parseObject((int)assetContentLen, assetType, saveFiles, fileName, isVerbose);
+                string fileName = string.Format("{0}_{1}_{2}", StrUtils.limitStr(assetName), index, crpInfo.header.assets[index].assetType.ToString());
+
+                dynamic obj = assetParser.parseObject((int)assetContentLen, assetType, saveFiles, fileName, isVerbose);
+                switch  ( assetType ) {
+                    case "ColossalFramework.Importers.Image": crpInfo.Images.Add( fileName, obj ); break;
+                    case "UnityEngine.Texture2D": crpInfo.Textures.Add( fileName, obj ); break;
+                    case "UnityEngine.Material": crpInfo.Materials.Add( fileName, obj ); break;
+                    case "UnityEngine.Mesh": crpInfo.Meshes.Add( fileName, obj ); break;
+                    case "BuildingInfoGen": crpInfo.InfoGens.Add( fileName, obj ); break;
+                    case "UnityEngine.GameObject": crpInfo.gameObjects.Add( fileName, obj); break;
+                    case "CustomAssetMetaData": crpInfo.metadata = obj; break;
+                }
             }
 
         }

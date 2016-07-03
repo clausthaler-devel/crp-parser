@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\CrpAssetInfo.cs" />
     <Compile Include="Models\CrpAssetInfoHeader.cs" />
     <Compile Include="CrpReader.cs" />
     <Compile Include="Options.cs" />

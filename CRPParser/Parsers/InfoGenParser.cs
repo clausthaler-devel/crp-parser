@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRPParser.Parsers
+namespace CRPTools.Parsers
 {
     public class InfoGenParser
     {
@@ -36,7 +36,7 @@ namespace CRPParser.Parsers
 
                 }
             }
-
+            
             if ((reader.BaseStream.Position - fileContentBegin) != fileSize)
             {
                 int bytesToRead = (int)(fileSize - (reader.BaseStream.Position - fileContentBegin));

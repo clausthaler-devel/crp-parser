@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRPParser
+namespace CRPTools
 {
     public class CrpReader : BinaryReader
     {

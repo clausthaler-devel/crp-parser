@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrpParser
+namespace CRPTools
 {
     public class Options
     {
