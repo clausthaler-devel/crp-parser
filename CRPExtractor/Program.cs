@@ -1,9 +1,8 @@
 ﻿using System;
+using System.IO;
 using CRPTools;
-using CommandLine;
 
-
-namespace CRPExtractor
+namespace CRPExporter
 {
     class Program
     {
@@ -11,19 +10,23 @@ namespace CRPExtractor
         {
             var options = new Options();
 
-            if ( args.Length == 1 )
+            if ( args.Length == 0 || args.Length > 2)
             {
-                options.InputFile = args[0];
-                options.Verbose = false;
-                options.SaveFiles = true;
-
-                CrpDeserializer deserializer = new CrpDeserializer(options.InputFile);
-                deserializer.parseFile( options );
+                var usage = options.GetUsage();
+                Console.WriteLine( usage );
             }
-            else if ( Parser.Default.ParseArguments( args, options ) )
+            else
             {
-                CrpDeserializer deserializer = new CrpDeserializer(options.InputFile);
-                deserializer.parseFile( options );
+                if ( args.Length >= 1 )
+                    options.InputFile = args[0];
+
+                if ( args.Length == 2 )
+                    options.OutputDirectory = args[1];
+                else
+                    options.OutputDirectory = new FileInfo( options.InputFile ).Directory.FullName;
+
+                if ( !CrpExporter.Export( options.InputFile, options.OutputDirectory ) )
+                    Console.WriteLine( "Error while extracting CRP-File." );
             }
         }
     }
