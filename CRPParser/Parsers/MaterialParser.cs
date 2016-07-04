@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CRPTools.Parsers
 {
-    class MaterialParser
+    class MaterialParser : BinaryParser
     {
-        public static MaterialStub parseMaterial(CrpReader reader, bool saveFile, string saveFileName,long fileSize,bool verbose)
+        public static MaterialStub parseMaterial(CrpReader reader, long fileSize)
         {
             long fileContentBegin = reader.BaseStream.Position;
             MaterialStub retVal = new MaterialStub();
@@ -44,24 +44,7 @@ namespace CRPTools.Parsers
                 }
             }
 
-            if((reader.BaseStream.Position-fileContentBegin) != fileSize)
-            {
-                int bytesToRead = (int)(fileSize - (reader.BaseStream.Position - fileContentBegin));
-                reader.ReadBytes(bytesToRead);
-            }
-            string fileName = saveFileName + ".json";
-            string json = JsonConvert.SerializeObject(retVal, Formatting.Indented);
-            if(verbose)
-            {
-                Console.WriteLine("Read info file {0}", fileName);
-                Console.WriteLine(json);
-            }
-            if (saveFile)
-            {
-                StreamWriter file = new StreamWriter(new FileStream(saveFileName + ".json", FileMode.Create));
-                file.Write(json);
-                file.Close();
-            }
+            ReadUntil( reader, fileContentBegin, fileSize );
 
             return retVal;
         }

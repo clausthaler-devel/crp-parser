@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CRPTools.Parsers
 {
-    class GameObjectParser
+    class GameObjectParser : BinaryParser
     {
-        public static Dictionary<string, dynamic> parseGameObj(CrpReader reader, bool saveFile, string saveFileName, long fileSize)
+        public static Dictionary<string, dynamic> parseGameObj(CrpReader reader, long fileSize)
         {
             Dictionary<string, dynamic> retVal = new Dictionary<string, dynamic>();
 
@@ -42,21 +42,7 @@ namespace CRPTools.Parsers
                 }
             }
 
-            if ((reader.BaseStream.Position - fileContentBegin) != fileSize)
-            {
-                int bytesToRead = (int)(fileSize - (reader.BaseStream.Position - fileContentBegin));
-                reader.ReadBytes(bytesToRead);
-            }
-            if (saveFile)
-            {
-                if (saveFile)
-                {
-                    string json = JsonConvert.SerializeObject(retVal, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
-                    StreamWriter file = new StreamWriter(new FileStream(saveFileName + ".json", FileMode.Create));
-                    file.Write(json);
-                    file.Close();
-                }
-            }
+            ReadUntil( reader, fileContentBegin, fileSize );
 
             return retVal;
         }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using CRPTools.Parsers;
 
 namespace CRPTools
@@ -9,7 +7,7 @@ namespace CRPTools
     {
         private CrpReader reader;
 
-        delegate dynamic Parser(CrpReader reader, bool saveFile, string saveFileName,long fileSize,bool verbose);
+        delegate dynamic Parser(CrpReader reader, long fileSize);
 
         Dictionary<string, Parser> parsers = new Dictionary<string, Parser>();
 
@@ -31,27 +29,17 @@ namespace CRPTools
 
         }
 
-        public dynamic parseObject(int length, string format, bool saveFile = false, string saveFilePath = null,bool verbose=false)
+        public dynamic parseObject(int length, string format)
         {
             dynamic retVal;
             if (parsers.ContainsKey(format))
             {
-                retVal = this.parsers[format](reader, saveFile, saveFilePath,length,verbose);
+                retVal = this.parsers[format](reader, length);
 
             }
             else
             {
                 retVal = reader.ReadBytes(length);
-                if (saveFile)
-                {
-                    System.IO.BinaryWriter file = new BinaryWriter(new FileStream(saveFilePath + ".bin", FileMode.Create));
-                    file.Write(retVal);
-                    file.Close();
-                }
-                if (verbose)
-                {
-                    Console.WriteLine("{0} bytes read for {1}",length, saveFilePath + ".bin");
-                }
             }
             return retVal;
         }

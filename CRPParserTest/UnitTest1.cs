@@ -13,7 +13,7 @@ namespace CRPParserTest
         {   
             var cwd = Directory.GetCurrentDirectory();
             var path = Path.Combine(cwd, "..", "..", "testfiles", "Colossal Mills.crp");
-            var info = new CrpDeserializer(path).parseFile();
+            var info = CrpDeserializer.parseFile( path );
             Assert.AreEqual( info.metadata["name"], "Colossal Mills" );
         }
     }

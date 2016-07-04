@@ -13,5 +13,6 @@ namespace CRPTools
         public Dictionary<string, Dictionary<string, dynamic>> InfoGens = new Dictionary<string, Dictionary<string, dynamic>>();
         public Dictionary<string, dynamic> gameObjects = new Dictionary<string, dynamic>();
         public Dictionary<string, dynamic> metadata;
+        public Dictionary<string, dynamic> blobs = new Dictionary<string, dynamic>();
     }
 }

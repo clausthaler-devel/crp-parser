@@ -42,21 +42,17 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>C:\Users\holli\Downloads\CrpParser\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+    <Reference Include="Magick.NET-Q16-AnyCPU">
       <HintPath>C:\Users\holli\Downloads\CrpParser\Magick.NET-Q16-AnyCPU.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Users\holli\Downloads\CrpParser\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,10 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrpExtractor.cs" />
     <Compile Include="Models\CrpAssetInfo.cs" />
     <Compile Include="Models\CrpAssetInfoHeader.cs" />
     <Compile Include="CrpReader.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="Parsers\BinaryParser.cs" />
     <Compile Include="Parsers\GameObjectParser.cs" />
     <Compile Include="Utils\Consts.cs" />
     <Compile Include="CrpDeserializer.cs" />

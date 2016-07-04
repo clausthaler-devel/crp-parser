@@ -1,71 +1,47 @@
 ﻿using CRPTools.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.IO;
 
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRPTools
 {
-    public class CrpDeserializer
+
+    public static class CrpDeserializer
     {
-        public string filePath;
-        private FileStream stream;
-        private CrpReader reader;
-        private AssetParser assetParser;
-        private Dictionary<string, int> typeRefCount = new Dictionary<string, int>();
+        //private Dictionary<string, int> typeRefCount = new Dictionary<string, int>();
 
-        public CrpDeserializer(string filePath)
+        public static CrpAssetInfo parseFile( FileInfo file )
         {
-            stream = File.Open(filePath, FileMode.Open);
-            reader = new CrpReader(stream);
-            assetParser = new AssetParser(reader);
+            return parseFile( file.FullName );
         }
 
-        public CrpAssetInfo parseFile( Options options )
+        public static CrpAssetInfo parseFile( string filePath )
         {
-            return parseFile( options.SaveFiles, options.Verbose );
+            var stream = File.Open( filePath, FileMode.Open );
+            return parseFile( stream );
         }
 
-        public CrpAssetInfo parseFile( bool SaveFiles = false, bool Verbose = false)
+        public static CrpAssetInfo parseFile( Stream stream )
         {
+            var reader = new CrpReader( stream );
+            return parseFile( reader );
+        }
+
+        public static CrpAssetInfo parseFile( CrpReader reader )
+        {
+
             string magicStr = new string(reader.ReadChars(4));
+
             var crpAssetInfo = new CrpAssetInfo();
 
             if (magicStr.Equals(Consts.MAGICSTR))
             {
-                crpAssetInfo.header = parseHeader();
-
-                if (SaveFiles)
-                {
-                    string path = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + crpAssetInfo.header.mainAssetName + "_contents";
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    Environment.CurrentDirectory = (path);
-                }
-
-                if (Verbose)
-                {
-                    Console.WriteLine( crpAssetInfo.header );
-                }
-                if (SaveFiles)
-                {
-                    StreamWriter file = new StreamWriter(new FileStream(crpAssetInfo.header.mainAssetName + "_header.json", FileMode.Create));
-                    string json = JsonConvert.SerializeObject(crpAssetInfo.header, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
-                    file.Write(json);
-                    file.Close();
-                }
+                crpAssetInfo.header = parseHeader(reader);
 
                 for (int i = 0; i < crpAssetInfo.header.numAssets; i++)
-                {
-                    parseAssets(crpAssetInfo, i, SaveFiles, Verbose);
-                }
+                    parseAssets(reader, crpAssetInfo, i);
             }
             else
             {
@@ -75,7 +51,7 @@ namespace CRPTools
             return crpAssetInfo;
         }
 
-        private CrpHeader parseHeader()
+        private static CrpHeader parseHeader(CrpReader reader)
         {
             CrpHeader output = new CrpHeader();
             output.formatVersion = reader.ReadUInt16();
@@ -110,7 +86,7 @@ namespace CRPTools
             return output;
         }
 
-        private void parseAssets(CrpAssetInfo crpInfo, int index, bool saveFiles, bool isVerbose)
+        private static void parseAssets(CrpReader reader, CrpAssetInfo crpInfo, int index)
         {
 
             bool isNullFlag = reader.ReadBoolean();
@@ -124,7 +100,8 @@ namespace CRPTools
 
                 string fileName = string.Format("{0}_{1}_{2}", StrUtils.limitStr(assetName), index, crpInfo.header.assets[index].assetType.ToString());
 
-                dynamic obj = assetParser.parseObject((int)assetContentLen, assetType, saveFiles, fileName, isVerbose);
+                dynamic obj = new AssetParser(reader).parseObject((int)assetContentLen, assetType);
+
                 switch  ( assetType ) {
                     case "ColossalFramework.Importers.Image": crpInfo.Images.Add( fileName, obj ); break;
                     case "UnityEngine.Texture2D": crpInfo.Textures.Add( fileName, obj ); break;
@@ -133,6 +110,7 @@ namespace CRPTools
                     case "BuildingInfoGen": crpInfo.InfoGens.Add( fileName, obj ); break;
                     case "UnityEngine.GameObject": crpInfo.gameObjects.Add( fileName, obj); break;
                     case "CustomAssetMetaData": crpInfo.metadata = obj; break;
+                    default: crpInfo.blobs.Add( fileName, obj ); break;
                 }
             }
 

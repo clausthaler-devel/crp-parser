@@ -4,12 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CRPTools.Parsers
 {
-    class MeshParser
+    class MeshParser : BinaryParser
     {
-        public static Mesh parseMesh(CrpReader reader, bool saveFile, string saveFileName, long fileSize, bool verbose)
+        public static Mesh parseMesh(CrpReader reader, long fileSize)
         {
             long fileContentBegin = reader.BaseStream.Position;
 
@@ -28,22 +27,8 @@ namespace CRPTools.Parsers
                 retVal.triangles.AddRange(triangles);
             }
 
-            if ((reader.BaseStream.Position - fileContentBegin) != fileSize)
-            {
-                int bytesToRead = (int)(fileSize - (reader.BaseStream.Position - fileContentBegin));
-                reader.ReadBytes(bytesToRead);
-            }
-            string fileName = saveFileName + ".obj";
-            if (verbose)
-            {
-                Console.WriteLine("Read {0} bytes into image file {1}", (reader.BaseStream.Position - fileContentBegin), fileName);
-            }
-            if (saveFile)
-            {
-                StreamWriter file = new StreamWriter(new FileStream(fileName, FileMode.Create));
-                file.Write(retVal.exportObj());
-                file.Close();
-            }
+            ReadUntil( reader, fileContentBegin, fileSize );
+
             return retVal;
         }
 

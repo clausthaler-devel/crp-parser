@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CRPTools.Parsers
 {
-    public class InfoGenParser
+    public class InfoGenParser : BinaryParser
     {
-        public static Dictionary<string, dynamic> parseInfoGen(CrpReader reader, bool saveFile, string saveFileName, long fileSize, bool verbose)
+        public static Dictionary<string, dynamic> parseInfoGen(CrpReader reader, long fileSize)
         {
             Dictionary<string, dynamic> retVal = new Dictionary<string, dynamic>();
 
@@ -25,36 +25,15 @@ namespace CRPTools.Parsers
                     string assemblyQualifiedName = reader.ReadString();
                     string propertyType = assemblyQualifiedName.Split(new char[] { ',' })[0];
                     string propertyName = reader.ReadString();
-                    if (propertyType.Contains("[]"))
-                    {
-                        retVal[propertyName] = reader.readUnityArray(propertyType);
-                    }
-                    else
-                    {
-                        retVal[propertyName] = reader.readUnityObj(propertyType);
-                    }
 
+                    if (propertyType.Contains("[]"))
+                        retVal[propertyName] = reader.readUnityArray(propertyType);
+                    else
+                        retVal[propertyName] = reader.readUnityObj(propertyType);
                 }
             }
-            
-            if ((reader.BaseStream.Position - fileContentBegin) != fileSize)
-            {
-                int bytesToRead = (int)(fileSize - (reader.BaseStream.Position - fileContentBegin));
-                reader.ReadBytes(bytesToRead);
-            }
-            string json = JsonConvert.SerializeObject(retVal, Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter());
-            string fileName = saveFileName + ".json";
-            if (verbose)
-            {
-                Console.WriteLine("Read info file {0}", fileName);
-                Console.WriteLine(json);
-            }
-            if (saveFile)
-            {
-                StreamWriter file = new StreamWriter(new FileStream(fileName, FileMode.Create));
-                file.Write(json);
-                file.Close();
-            }
+
+            ReadUntil( reader, fileContentBegin, fileSize );
 
             return retVal;
         }
