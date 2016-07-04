@@ -25,8 +25,18 @@ namespace CRPExporter
                 else
                     options.OutputDirectory = new FileInfo( options.InputFile ).Directory.FullName;
 
-                if ( !CrpExporter.Export( options.InputFile, options.OutputDirectory ) )
-                    Console.WriteLine( "Error while extracting CRP-File." );
+                try
+                {
+                    if ( !CrpExporter.Export( options.InputFile, options.OutputDirectory ) )
+                        Console.WriteLine( "Unexpected Error while extracting CRP-File." );
+                    else
+                        Console.WriteLine( "Done." );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine( "Error while extracting CRP-File.\r\n" + ex.Message );
+                }
+
             }
         }
     }

@@ -36,9 +36,17 @@ namespace WindowsFormsApplication1
 
         private void button4_Click( object sender, EventArgs e )
         {
-            if ( !CrpExporter.Export( textBox1.Text, textBox2.Text ) )
-                MessageBox.Show( this, "Error while extracting CRP-File.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-            this.Close();
+            try
+            {
+                if ( !CrpExporter.Export( textBox1.Text, textBox2.Text ) )
+                    MessageBox.Show( this, "Unexpected Error while extracting CRP-File.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                else
+                    MessageBox.Show( this, "Done.", "You did it!", MessageBoxButtons.OK, MessageBoxIcon.Information );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show( this, "Error while extracting CRP-File.\r\n" + ex.Message , "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
         }
 
         private void button3_Click( object sender, EventArgs e )
