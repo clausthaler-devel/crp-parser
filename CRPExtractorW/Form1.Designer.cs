@@ -53,7 +53,7 @@
             this.textBox2.Location = new System.Drawing.Point(15, 86);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(288, 22);
-            this.textBox2.TabIndex = 1;
+            this.textBox2.TabIndex = 2;
             // 
             // button1
             // 
@@ -61,7 +61,7 @@
             this.button1.Location = new System.Drawing.Point(309, 35);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 22);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 1;
             this.button1.Text = "Select";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -83,7 +83,7 @@
             this.button3.Location = new System.Drawing.Point(309, 125);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(91, 34);
-            this.button3.TabIndex = 4;
+            this.button3.TabIndex = 5;
             this.button3.Text = "Close";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -114,7 +114,7 @@
             this.button4.Location = new System.Drawing.Point(15, 125);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(288, 34);
-            this.button4.TabIndex = 8;
+            this.button4.TabIndex = 4;
             this.button4.Text = "Extract";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);

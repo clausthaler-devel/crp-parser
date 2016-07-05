@@ -20,13 +20,17 @@ namespace CRPTools
         public static CrpAssetInfo parseFile( string filePath )
         {
             var stream = File.Open( filePath, FileMode.Open );
-            return parseFile( stream );
+            var val = parseFile( stream );
+            stream.Close();
+            return val;
         }
 
         public static CrpAssetInfo parseFile( Stream stream )
         {
             var reader = new CrpReader( stream );
-            return parseFile( reader );
+            var val = parseFile( reader );
+            reader.Close();
+            return val;
         }
 
         public static CrpAssetInfo parseFile( CrpReader reader )
