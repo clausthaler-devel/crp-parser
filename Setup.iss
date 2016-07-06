@@ -41,15 +41,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "CRPExtractorW\bin\Release\CRPExtractorW.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\CRPExtractorW.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\CRPExtractorW.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CRPExtractorW\bin\Release\CRPExtractorW.vshost.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CRPExtractorW\bin\Release\CRPExtractorW.vshost.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CRPExtractorW\bin\Release\CRPExtractorW.vshost.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\CrpParser.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\CrpParser.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractor\bin\Release\CRPExtractor.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "CRPExtractor\bin\Release\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
