@@ -48,9 +48,6 @@
       <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Magick.NET-Q16-AnyCPU">
-      <HintPath>C:\Users\holli\Downloads\CrpParser\Magick.NET-Q16-AnyCPU.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Users\holli\Downloads\CrpParser\Newtonsoft.Json.dll</HintPath>
     </Reference>

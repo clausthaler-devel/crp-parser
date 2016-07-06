@@ -36,9 +36,6 @@
     <ApplicationIcon>crpextractor.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Magick.NET-Q16-AnyCPU">
-      <HintPath>C:\Users\holli\Downloads\CrpParser\Magick.NET-Q16-AnyCPU.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Users\holli\Downloads\CrpParser\Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CRP-Extractor"
-#define MyAppVersion "0.1"
+#define MyAppVersion "0.2"
 #define MyAppPublisher "Claus Thaler"
 #define MyAppURL "https://github.com/clausthaler-devel/crp-parser"
 #define MyAppExeName "CRPExtractorW.exe"
@@ -47,8 +47,6 @@ Source: "CRPExtractorW\bin\Release\CRPExtractorW.vshost.exe.manifest"; DestDir: 
 Source: "CRPExtractorW\bin\Release\CrpParser.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\CrpParser.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\ICSharpCode.SharpZipLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CRPExtractorW\bin\Release\Magick.NET-Q16-AnyCPU.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CRPExtractorW\bin\Release\Magick.NET-Q16-AnyCPU.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractorW\bin\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CRPExtractor\bin\Release\CRPExtractor.exe"; DestDir: "{app}"; Flags: ignoreversion

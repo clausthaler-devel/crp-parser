@@ -154,7 +154,9 @@ namespace CRPTools
         {
             try
             {
-                dataObject.Write( saveToFile );
+                if ( File.Exists( saveToFile ) ) File.Delete( saveToFile );
+                var stream = new FileStream(saveToFile, FileMode.Create, FileAccess.Write);
+                stream.Write( dataObject, 0, dataObject.Length );
                 return true;
             }
             catch
